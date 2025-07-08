@@ -7,4 +7,5 @@ type UserRepository interface {
 	FindByEmail(email string) (models.User, bool)
 	CreateUser(user models.User) error
 	FindByUuid(uuid string) (models.User, bool)
+	UpdateUser(user models.User) error
 }

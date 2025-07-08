@@ -88,3 +88,39 @@ func (us *userService) CreateUser(user models.User) (models.User, error) {
 
 	return user, nil
 }
+
+func (us *userService) UpdateUser(uuid string, user models.User) (models.User, error) {
+	currentUser, found := us.repo.FindByUuid(uuid)
+
+	if !found {
+		return models.User{}, utils.NewError("can not found user", string(utils.ErrCodeNotFound))
+	}
+
+	email := strings.ToLower(strings.ToLower(user.Email))
+	_, foundEmail := us.repo.FindByEmail(email)
+	if foundEmail {
+		return models.User{}, utils.NewError("email already register", string(utils.ErrCodeConflict))
+	}
+
+	currentUser.Email = user.Email
+	currentUser.Age = user.Age
+	currentUser.Level = user.Level
+	currentUser.Name = user.Name
+	currentUser.Status = user.Status
+
+	if user.Password != "" {
+		hashPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+
+		if err != nil {
+			return models.User{}, utils.NewError("failed to hash password", string(utils.ErrCodeInternal))
+		}
+
+		currentUser.Password = string(hashPassword)
+	}
+
+	if err := us.repo.UpdateUser(currentUser); err != nil {
+		return models.User{}, utils.WrapError(err, "can not update user", string(utils.ErrCodeInternal))
+	}
+
+	return currentUser, nil
+}

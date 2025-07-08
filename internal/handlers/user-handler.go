@@ -99,3 +99,26 @@ func (uh *UserHandler) CreateUser(ctx *gin.Context) {
 	utils.ResponseSuccess(ctx, http.StatusCreated, &userDTO)
 
 }
+
+func (uh *UserHandler) UpdateUser(ctx *gin.Context) {
+	var params GetUserByUuidParam
+	if err := ctx.ShouldBindUri(&params); err != nil {
+		utils.ResponseValidator(ctx, validations.HandleValidationErrors(err))
+		return
+	}
+
+	var user models.User
+	if err := ctx.ShouldBindJSON(&user); err != nil {
+		utils.ResponseValidator(ctx, validations.HandleValidationErrors(err))
+		return
+	}
+
+	updatedUser, err := uh.service.UpdateUser(params.UUID, user)
+	if err != nil {
+		utils.ResponseError(ctx, err)
+		return
+	}
+
+	utils.ResponseSuccess(ctx, http.StatusOK, updatedUser)
+
+}

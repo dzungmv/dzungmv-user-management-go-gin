@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"fmt"
 	"go/user-management/internal/models"
 )
 
@@ -41,4 +42,15 @@ func (ur *userRepository) CreateUser(user models.User) error {
 	ur.users = append(ur.users, user)
 
 	return nil
+}
+
+func (ur *userRepository) UpdateUser(user models.User) error {
+	for index, _user := range ur.users {
+		if _user.UUID == user.UUID {
+			ur.users[index] = user
+			return nil
+		}
+	}
+
+	return fmt.Errorf("user not found")
 }
