@@ -28,5 +28,6 @@ func (ur *UserRoutes) Register(r *gin.RouterGroup) {
 	users := r.Group("/users")
 	{
 		users.GET("", ur.handler.GetAllUsers)
+		users.POST("", ur.handler.CreateUser)
 	}
 }

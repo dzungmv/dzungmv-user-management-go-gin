@@ -3,6 +3,7 @@ package app
 import (
 	"go/user-management/internal/configs"
 	"go/user-management/internal/routes"
+	"go/user-management/internal/validations"
 	"log"
 
 	"github.com/gin-gonic/gin"
@@ -21,6 +22,10 @@ type Module interface {
 
 func NewApplication(config *configs.Config) *Application {
 	r := gin.Default()
+
+	if err := validations.InitValidator(); err != nil {
+		log.Fatalf("Validation init failed %v", err)
+	}
 
 	loadEnv()
 

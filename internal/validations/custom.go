@@ -26,7 +26,7 @@ func RegisterCustomValidation(v *validator.Validate) {
 			return false
 		}
 
-		domain := utils.NomarlizeString(parts[1])
+		domain := utils.NormalizeString(parts[1])
 
 		return domainsBlocked[domain]
 	})
