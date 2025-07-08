@@ -1,10 +1,10 @@
 package app
 
 import (
-	"go/user-management/intenal/handlers"
-	"go/user-management/intenal/repositories"
-	"go/user-management/intenal/routes"
-	"go/user-management/intenal/services"
+	"go/user-management/internal/handlers"
+	"go/user-management/internal/repositories"
+	"go/user-management/internal/routes"
+	"go/user-management/internal/services"
 )
 
 type UserModule struct {

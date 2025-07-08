@@ -1,8 +1,8 @@
 package main
 
 import (
-	"go/user-management/intenal/app"
-	"go/user-management/intenal/configs"
+	"go/user-management/internal/app"
+	"go/user-management/internal/configs"
 )
 
 func main() {

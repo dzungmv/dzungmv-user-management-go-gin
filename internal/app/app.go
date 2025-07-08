@@ -1,15 +1,18 @@
 package app
 
 import (
-	"go/user-management/intenal/configs"
-	"go/user-management/intenal/routes"
+	"go/user-management/internal/configs"
+	"go/user-management/internal/routes"
+	"log"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 type Application struct {
-	config *configs.Config
-	router *gin.Engine
+	config  *configs.Config
+	router  *gin.Engine
+	modules []Module
 }
 
 type Module interface {
@@ -19,6 +22,8 @@ type Module interface {
 func NewApplication(config *configs.Config) *Application {
 	r := gin.Default()
 
+	loadEnv()
+
 	modules := []Module{
 		NewUserModule(),
 	}
@@ -26,8 +31,9 @@ func NewApplication(config *configs.Config) *Application {
 	routes.RegisterRoutes(r, GetModuleRoutes(modules)...)
 
 	return &Application{
-		config: config,
-		router: r,
+		config:  config,
+		router:  r,
+		modules: modules,
 	}
 }
 
@@ -43,4 +49,13 @@ func GetModuleRoutes(module []Module) []routes.Route {
 	}
 
 	return routeList
+}
+
+func loadEnv() {
+	err := godotenv.Load("../../.env")
+
+	if err != nil {
+		log.Println("Can not find .env file, try again!")
+	}
+
 }

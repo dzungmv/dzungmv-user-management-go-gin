@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"go/user-management/intenal/handlers"
-	"go/user-management/intenal/middlewares"
+	"go/user-management/internal/handlers"
+	"go/user-management/internal/middlewares"
 
 	"github.com/gin-gonic/gin"
 )
@@ -18,7 +18,13 @@ func NewUserRoutes(handler *handlers.UserHandler) *UserRoutes {
 }
 
 func (ur *UserRoutes) Register(r *gin.RouterGroup) {
-	r.Use(middlewares.AuthMiddleware())
+	r.Use(
+		middlewares.LoggerMiddleware(),
+		middlewares.ApiKeyMiddleware(),
+		middlewares.AuthMiddleware(),
+		middlewares.RateLimiterMiddleware(),
+	)
+
 	users := r.Group("/users")
 	{
 		users.GET("", ur.handler.GetAllUsers)

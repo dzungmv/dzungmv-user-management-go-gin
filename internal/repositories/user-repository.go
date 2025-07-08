@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	"go/user-management/intenal/models"
+	"go/user-management/internal/models"
 	"log"
 )
 

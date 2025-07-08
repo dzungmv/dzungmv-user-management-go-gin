@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"go/user-management/intenal/services"
+	"go/user-management/internal/services"
 	"log"
 
 	"github.com/gin-gonic/gin"

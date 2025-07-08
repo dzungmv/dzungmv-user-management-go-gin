@@ -1,7 +1,7 @@
 package services
 
 import (
-	"go/user-management/intenal/repositories"
+	"go/user-management/internal/repositories"
 	"log"
 )
 
