@@ -42,7 +42,7 @@ func (uh *UserHandler) GetUserByUuid(ctx *gin.Context) {
 	var params GetUserByUuidParam
 
 	if err := ctx.ShouldBindUri(&params); err != nil {
-		ctx.JSON(http.StatusBadRequest, validations.HandleValidationErrors(err))
+		utils.ResponseValidator(ctx, validations.HandleValidationErrors(err))
 		return
 	}
 
@@ -62,7 +62,7 @@ func (uh *UserHandler) CreateUser(ctx *gin.Context) {
 	var user models.User
 
 	if err := ctx.ShouldBindJSON(&user); err != nil {
-		ctx.JSON(http.StatusBadGateway, validations.HandleValidationErrors(err))
+		utils.ResponseValidator(ctx, validations.HandleValidationErrors(err))
 		return
 	}
 
