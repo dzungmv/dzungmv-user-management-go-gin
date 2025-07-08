@@ -29,5 +29,6 @@ func (ur *UserRoutes) Register(r *gin.RouterGroup) {
 	{
 		users.GET("", ur.handler.GetAllUsers)
 		users.POST("", ur.handler.CreateUser)
+		users.GET("/:uuid", ur.handler.GetUserByUuid)
 	}
 }

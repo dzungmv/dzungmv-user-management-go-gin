@@ -2,7 +2,6 @@ package repositories
 
 import (
 	"go/user-management/internal/models"
-	"log"
 )
 
 type userRepository struct {
@@ -15,8 +14,17 @@ func NewUserRepository() *userRepository {
 	}
 }
 
-func (ur *userRepository) FindAll() {
-	log.Println("Find all users")
+func (ur *userRepository) FindAll() ([]models.User, error) {
+	return ur.users, nil
+}
+
+func (ur *userRepository) FindByUuid(uuid string) (models.User, bool) {
+	for _, user := range ur.users {
+		if user.UUID == uuid {
+			return user, true
+		}
+	}
+	return models.User{}, false
 }
 
 func (ur *userRepository) FindByEmail(email string) (models.User, bool) {

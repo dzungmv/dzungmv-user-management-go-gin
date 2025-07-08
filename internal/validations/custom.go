@@ -28,7 +28,7 @@ func RegisterCustomValidation(v *validator.Validate) {
 
 		domain := utils.NormalizeString(parts[1])
 
-		return domainsBlocked[domain]
+		return !domainsBlocked[domain]
 	})
 
 	v.RegisterValidation("password_strong", func(fl validator.FieldLevel) bool {
