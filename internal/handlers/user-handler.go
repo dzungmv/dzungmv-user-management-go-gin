@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"go/user-management/internal/dto"
-	"go/user-management/internal/models"
 	"go/user-management/internal/services"
 	"go/user-management/internal/utils"
 	"go/user-management/internal/validations"
@@ -80,21 +79,23 @@ func (uh *UserHandler) GetUserByUuid(ctx *gin.Context) {
 }
 
 func (uh *UserHandler) CreateUser(ctx *gin.Context) {
-	var user models.User
+	var input dto.CreateUserInput
 
-	if err := ctx.ShouldBindJSON(&user); err != nil {
+	if err := ctx.ShouldBindJSON(&input); err != nil {
 		utils.ResponseValidator(ctx, validations.HandleValidationErrors(err))
 		return
 	}
 
-	user, err := uh.service.CreateUser(user)
+	user := input.MapCreateToUserModel()
+
+	created, err := uh.service.CreateUser(user)
 
 	if err != nil {
 		utils.ResponseError(ctx, err)
 		return
 	}
 
-	userDTO := dto.MapUserToDTO(user)
+	userDTO := dto.MapUserToDTO(created)
 
 	utils.ResponseSuccess(ctx, http.StatusCreated, &userDTO)
 
@@ -107,11 +108,13 @@ func (uh *UserHandler) UpdateUser(ctx *gin.Context) {
 		return
 	}
 
-	var user models.User
-	if err := ctx.ShouldBindJSON(&user); err != nil {
+	var input dto.UpdateUserInput
+	if err := ctx.ShouldBindJSON(&input); err != nil {
 		utils.ResponseValidator(ctx, validations.HandleValidationErrors(err))
 		return
 	}
+
+	user := input.MapUpdateToUserModel()
 
 	updatedUser, err := uh.service.UpdateUser(params.UUID, user)
 	if err != nil {
@@ -119,6 +122,8 @@ func (uh *UserHandler) UpdateUser(ctx *gin.Context) {
 		return
 	}
 
-	utils.ResponseSuccess(ctx, http.StatusOK, updatedUser)
+	userDTO := dto.MapUserToDTO(updatedUser)
+
+	utils.ResponseSuccess(ctx, http.StatusOK, userDTO)
 
 }
