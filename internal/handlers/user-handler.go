@@ -141,7 +141,7 @@ func (uh *UserHandler) DeleteUser(ctx *gin.Context) {
 		return
 	}
 
-	utils.ResponseSuccess(ctx, http.StatusFound, gin.H{
+	utils.ResponseSuccess(ctx, http.StatusNoContent, gin.H{
 		"message": "detele user successfully",
 	})
 }
