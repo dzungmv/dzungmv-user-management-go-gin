@@ -124,3 +124,13 @@ func (us *userService) UpdateUser(uuid string, user models.User) (models.User, e
 
 	return currentUser, nil
 }
+
+func (us *userService) DeleteUser(uuid string) error {
+
+	if err := us.repo.DeleteUser(uuid); err != nil {
+		return utils.WrapError(err, "can not delete user", string(utils.ErrCodeInternal))
+	}
+
+	return nil
+
+}

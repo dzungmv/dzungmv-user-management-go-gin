@@ -3,6 +3,7 @@ package repositories
 import (
 	"fmt"
 	"go/user-management/internal/models"
+	"slices"
 )
 
 type userRepository struct {
@@ -48,6 +49,19 @@ func (ur *userRepository) UpdateUser(user models.User) error {
 	for index, _user := range ur.users {
 		if _user.UUID == user.UUID {
 			ur.users[index] = user
+			return nil
+		}
+	}
+
+	return fmt.Errorf("user not found")
+}
+
+func (ur *userRepository) DeleteUser(uuid string) error {
+
+	for i, user := range ur.users {
+		if user.UUID == uuid {
+			ur.users = slices.Delete(ur.users, i, i+1)
+
 			return nil
 		}
 	}

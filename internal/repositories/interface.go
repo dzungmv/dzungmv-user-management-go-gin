@@ -8,4 +8,5 @@ type UserRepository interface {
 	CreateUser(user models.User) error
 	FindByUuid(uuid string) (models.User, bool)
 	UpdateUser(user models.User) error
+	DeleteUser(uuid string) error
 }

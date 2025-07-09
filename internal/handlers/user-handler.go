@@ -127,3 +127,21 @@ func (uh *UserHandler) UpdateUser(ctx *gin.Context) {
 	utils.ResponseSuccess(ctx, http.StatusOK, userDTO)
 
 }
+
+func (uh *UserHandler) DeleteUser(ctx *gin.Context) {
+
+	var params GetUserByUuidParam
+	if err := ctx.ShouldBindUri(&params); err != nil {
+		utils.ResponseValidator(ctx, validations.HandleValidationErrors(err))
+		return
+	}
+
+	if err := uh.service.DeleteUser(params.UUID); err != nil {
+		utils.ResponseError(ctx, err)
+		return
+	}
+
+	utils.ResponseSuccess(ctx, http.StatusFound, gin.H{
+		"message": "detele user successfully",
+	})
+}
